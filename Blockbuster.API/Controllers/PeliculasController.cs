@@ -1,4 +1,5 @@
 ﻿
+using Blockbuster.API.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blockbuster.API.Controllers
@@ -27,6 +28,17 @@ namespace Blockbuster.API.Controllers
         public ActionResult<string> Get(string nombre, int edad)
         {
             return Ok($"Hola desde API {nombre} {edad}");
+        }
+        
+        [HttpPost]
+        public ActionResult<string> Post([FromBody] LoginDto login)
+        {
+            if(login.Usuario == "Fulanito" && login.Password == "nulo")
+            {
+                return Ok();
+            }
+
+            return Unauthorized();
         }
     }
 }
