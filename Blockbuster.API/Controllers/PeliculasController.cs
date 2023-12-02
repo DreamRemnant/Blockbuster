@@ -1,44 +1,32 @@
 ﻿
+using Blockbuster.API.Models;
 using Blockbuster.API.Models.Dtos;
+using Blockbuster.API.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blockbuster.API.Controllers
 {
     public class PeliculasController : MyController
     {
+        private readonly ApplicationDbContext _context;
+        public PeliculasController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
-        public ActionResult<string> Get()
+        public async Task<ActionResult<List<Pelicula>>> Get()
         {
-            return Ok("Hola desde API");
+            return await _context.Peliculas
+                .Include(g => g.Generos)
+                .ToListAsync();
         }
 
-        [HttpGet("peliculas2")]
-        public ActionResult<string> Get2()
-        {
-            return Ok("Hola desde API de nuevo");
-        }
-
-        [HttpGet("{nombre}")]
-        public ActionResult<string> Get(string nombre)
-        {
-            return Ok($"Hola desde API {nombre}");
-        }
-
-        [HttpGet("{nombre}/{edad:int}")]
-        public ActionResult<string> Get(string nombre, int edad)
-        {
-            return Ok($"Hola desde API {nombre} {edad}");
-        }
-        
         [HttpPost]
-        public ActionResult<string> Post([FromBody] LoginDto login)
+        public async Task Create(Pelicula pelicula)
         {
-            if(login.Usuario == "Fulanito" && login.Password == "nulo")
-            {
-                return Ok();
-            }
-
-            return Unauthorized();
+            await _context.Peliculas.AddAsync(pelicula);
+            await _context.SaveChangesAsync();
         }
     }
 }

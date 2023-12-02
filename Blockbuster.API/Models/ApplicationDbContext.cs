@@ -14,5 +14,7 @@ namespace Blockbuster.API.Models
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Pelicula> Peliculas { get; set; }
+        public DbSet<Genero> Generos { get; set; }
     }
 }

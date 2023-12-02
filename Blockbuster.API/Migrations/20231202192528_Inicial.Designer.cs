@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blockbuster.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125204922_Inicial")]
+    [Migration("20231202192528_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -23,6 +23,22 @@ namespace Blockbuster.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Blockbuster.API.Models.Entities.Pelicula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Peliculas");
+                });
 
             modelBuilder.Entity("Blockbuster.API.Models.Entities.Usuario", b =>
                 {
